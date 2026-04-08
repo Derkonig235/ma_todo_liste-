@@ -11,7 +11,7 @@ class AppStyles {
   static const TextStyle subtitle = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.normal,
-    color: AppColors.grey,
+    color: AppColors.black,
   );
 
   static const TextStyle button = TextStyle(
