@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/task.dart';
 import '../constants/colors.dart';
-import '../constants/styles.dart';
 
 class TaskCard extends StatelessWidget {
   final Task task;
@@ -18,14 +17,24 @@ class TaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.white,
+      color: Colors.white,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ListTile(
-        title: Text(task.title, style: AppStyles.title),
-        subtitle: Text(task.description, style: AppStyles.subtitle),
+        title: Text(task.title),
+        subtitle: Text(task.description),
         leading: Icon(
-          task.isDone ? Icons.check_circle : Icons.circle_outlined,
-          color: task.isDone ? AppColors.done : AppColors.notDone,
+          task.status == TaskStatus.inProgress
+              ? Icons.circle_outlined
+              : task.status == TaskStatus.done
+                  ? Icons.check_circle
+                  : Icons.circle_outlined,
+          color: task.status == TaskStatus.inProgress
+              ? Colors.blue
+              : task.status == TaskStatus.done
+                  ? AppColors.done
+                  : task.status == TaskStatus.late
+                      ? Colors.orange
+                      : Colors.red,
         ),
         trailing: IconButton(
           icon: const Icon(Icons.delete, color: Colors.red),
@@ -44,16 +53,17 @@ class TaskCard extends StatelessWidget {
                     onPressed: () {
                       Navigator.pop(dialogContext);
                       onDelete();
+                      ScaffoldMessenger.of(context).clearSnackBars();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: const Text("Tâche supprimée"),
-                          backgroundColor: Colors.blue,
+                          backgroundColor: Colors.grey[800],
                           behavior: SnackBarBehavior.floating,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                          margin: const EdgeInsets.all(26),
-                          duration: const Duration(seconds: 3),
+                          margin: const EdgeInsets.all(16),
+                          duration: const Duration(seconds: 2),
                         ),
                       );
                     },

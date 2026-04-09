@@ -27,20 +27,34 @@ class DetailScreen extends StatelessWidget {
             Text(task.description, style: AppStyles.subtitle),
             const SizedBox(height: 16),
             Row(
-              children: [
-                Icon(
-                  task.isDone ? Icons.check_circle : Icons.circle_outlined,
-                  color: task.isDone ? AppColors.done : AppColors.notDone,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  task.isDone
-                      ? AppStrings.taskDone
-                      : AppStrings.taskNotDone,
-                  style: AppStyles.subtitle,
-                ),
-              ],
-            ),
+            children: [
+              Icon(
+                task.status == TaskStatus.inProgress
+                    ? Icons.circle_outlined
+                    : task.status == TaskStatus.done
+                        ? Icons.check_circle
+                        : Icons.circle_outlined,
+                color: task.status == TaskStatus.inProgress
+                    ? Colors.blue
+                    : task.status == TaskStatus.done
+                        ? AppColors.done
+                        : task.status == TaskStatus.late
+                            ? Colors.orange
+                            : Colors.red,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                task.status == TaskStatus.inProgress
+                    ? "En cours"
+                    : task.status == TaskStatus.done
+                        ? "Terminée"
+                        : task.status == TaskStatus.late
+                            ? "En retard"
+                            : "Abandonné",
+                style: AppStyles.subtitle,
+              ),
+            ],
+          ),
             const SizedBox(height: 16),
             Text(
               "Créée le : ${task.createdAt.day}/${task.createdAt.month}/${task.createdAt.year}",

@@ -23,10 +23,25 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _addTask(Task task) {
-    setState(() {
-      tasks.add(task);
-    });
-  }
+  setState(() {
+    tasks.add(task);
+  });
+  ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(
+    content: const Text(
+      "Tâche ajoutée avec succès",
+      textAlign: TextAlign.center,
+    ),
+    backgroundColor: Colors.blue,
+    behavior: SnackBarBehavior.floating,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+    width: 220,
+    duration: const Duration(seconds: 2),
+  ),
+);
+}
 
   @override
   Widget build(BuildContext context) {
