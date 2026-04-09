@@ -45,10 +45,15 @@ class TaskCard extends StatelessWidget {
                       Navigator.pop(dialogContext);
                       onDelete();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Tâche supprimée avec succès"),
-                          backgroundColor: Colors.red,
-                          duration: Duration(seconds: 2),
+                        SnackBar(
+                          content: const Text("Tâche supprimée"),
+                          backgroundColor: Colors.blue,
+                          behavior: SnackBarBehavior.floating,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          margin: const EdgeInsets.all(26),
+                          duration: const Duration(seconds: 3),
                         ),
                       );
                     },
