@@ -36,46 +36,59 @@ class TaskCard extends StatelessWidget {
                       ? Colors.orange
                       : Colors.red,
         ),
-        trailing: IconButton(
-          icon: const Icon(Icons.delete, color: Colors.red),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (dialogContext) => AlertDialog(
-                title: const Text("Supprimer la tâche"),
-                content: const Text("Voulez-vous vraiment supprimer cette tâche ?"),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(dialogContext),
-                    child: const Text("Annuler"),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(dialogContext);
-                      onDelete();
-                      ScaffoldMessenger.of(context).clearSnackBars();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text("Tâche supprimée"),
-                          backgroundColor: Colors.grey[800],
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          margin: const EdgeInsets.all(16),
-                          duration: const Duration(seconds: 2),
+        trailing: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.edit, color: Colors.blue),
+              onPressed: () {},
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (dialogContext) => AlertDialog(
+                    title: const Text("Supprimer la tâche"),
+                    content: const Text("Voulez-vous vraiment supprimer cette tâche ?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(dialogContext),
+                        child: const Text("Annuler"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(dialogContext);
+                          onDelete();
+                          ScaffoldMessenger.of(context).clearSnackBars();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text("Tâche supprimée"),
+                              backgroundColor: Colors.grey[800],
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              width: 180,
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "Supprimer",
+                          style: TextStyle(color: Colors.red),
                         ),
-                      );
-                    },
-                    child: const Text(
-                      "Supprimer",
-                      style: TextStyle(color: Colors.red),
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          },
+                );
+              },
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+            ),
+          ],
         ),
         onTap: onTap,
       ),
