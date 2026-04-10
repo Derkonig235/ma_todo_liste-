@@ -14,83 +14,126 @@ class TaskCard extends StatelessWidget {
     required this.onDelete,
   }) : super(key: key);
 
+  Color _statusColor() {
+    switch (task.status) {
+      case TaskStatus.done:
+        return AppColors.done;
+      case TaskStatus.late:
+        return Colors.orange;
+      case TaskStatus.abandoned:
+        return Colors.red;
+      default:
+        return Colors.blue;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: ListTile(
-        title: Text(task.title),
-        subtitle: Text(task.description),
-        leading: Icon(
-          task.status == TaskStatus.inProgress
-              ? Icons.circle_outlined
-              : task.status == TaskStatus.done
-                  ? Icons.check_circle
-                  : Icons.circle_outlined,
-          color: task.status == TaskStatus.inProgress
-              ? Colors.blue
-              : task.status == TaskStatus.done
-                  ? AppColors.done
-                  : task.status == TaskStatus.late
-                      ? Colors.orange
-                      : Colors.red,
-        ),
-        trailing: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.edit, color: Colors.blue),
-              onPressed: () {},
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-            ),
-            IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (dialogContext) => AlertDialog(
-                    title: const Text("Supprimer la tâche"),
-                    content: const Text("Voulez-vous vraiment supprimer cette tâche ?"),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(dialogContext),
-                        child: const Text("Annuler"),
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        color: Colors.white,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Icône statut
+              Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Icon(
+                  task.status == TaskStatus.done
+                      ? Icons.check_circle
+                      : Icons.circle_outlined,
+                  color: _statusColor(),
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 12),
+
+              // Titre + description
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      task.title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(dialogContext);
-                          onDelete();
-                          ScaffoldMessenger.of(context).clearSnackBars();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: const Text("Tâche supprimée"),
-                              backgroundColor: Colors.grey[800],
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              width: 180,
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
-                        },
-                        child: const Text(
-                          "Supprimer",
-                          style: TextStyle(color: Colors.red),
-                        ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      task.description,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+
+              // Boutons éditer + supprimer
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: const Icon(Icons.edit, color: Colors.blue, size: 20),
                   ),
-                );
-              },
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-            ),
-          ],
+                  const SizedBox(height: 12),
+                  InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (dialogContext) => AlertDialog(
+                          title: const Text("Supprimer la tâche"),
+                          content: const Text("Voulez-vous vraiment supprimer cette tâche ?"),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(dialogContext),
+                              child: const Text("Annuler"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(dialogContext);
+                                onDelete();
+                                ScaffoldMessenger.of(context).clearSnackBars();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Text("Tâche supprimée"),
+                                    backgroundColor: Colors.grey[800],
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    width: 180,
+                                    duration: const Duration(seconds: 2),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                "Supprimer",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    child: const Icon(Icons.delete, color: Colors.red, size: 20),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-        onTap: onTap,
       ),
     );
   }
