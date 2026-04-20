@@ -6,12 +6,14 @@ class TaskCard extends StatelessWidget {
   final Task task;
   final VoidCallback onTap;
   final VoidCallback onDelete;
+  final VoidCallback onEdit;
 
   const TaskCard({
     Key? key,
     required this.task,
     required this.onTap,
     required this.onDelete,
+    required this.onEdit,
   }) : super(key: key);
 
   Color _statusColor() {
@@ -84,7 +86,7 @@ class TaskCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: onEdit,
                     child: const Icon(Icons.edit, color: Colors.blue, size: 20),
                   ),
                   const SizedBox(height: 12),

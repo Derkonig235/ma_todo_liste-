@@ -123,12 +123,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    DetailScreen(task: tasks[index]),
+                                builder: (context) => DetailScreen(task: tasks[index]),
                               ),
                             );
                           },
                           onDelete: () => _deleteTask(tasks[index].id),
+                          onEdit: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddTaskScreen(
+                                  onAdd: _addTask,
+                                  task: tasks[index],
+                                ),
+                              ),
+                            );
+                          },
                         );
                       },
                     ),

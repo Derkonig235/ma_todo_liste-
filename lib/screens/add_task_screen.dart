@@ -5,8 +5,13 @@ import '../constants/strings.dart';
 
 class AddTaskScreen extends StatefulWidget {
   final Function(Task) onAdd;
+  final Task? task;
 
-  const AddTaskScreen({Key? key, required this.onAdd}) : super(key: key);
+  const AddTaskScreen({
+    Key? key,
+    required this.onAdd,
+    this.task,
+  }) : super(key: key);
 
   @override
   State<AddTaskScreen> createState() => _AddTaskScreenState();
@@ -22,6 +27,19 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   DateTime? _dueDate;
   bool _startDateError = false;
   bool _dueDateError = false;
+
+  @override
+  void initState() {
+    super.initState();
+      if (widget.task != null) {
+        _titleController.text = widget.task!.title;
+        _descriptionController.text = widget.task!.description;
+        _priority = widget.task!.priority;
+        _category = widget.task!.category;
+        _startDate = widget.task!.startDate;
+        _dueDate = widget.task!.dueDate;
+      }
+  }
 
   bool _hasInput() {
     return _titleController.text.isNotEmpty ||
@@ -66,7 +84,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     }
   }
 
-  void _saveTask() {
+  Future<void> _saveTask() async {
     setState(() {
       _startDateError = _startDate == null;
       _dueDateError = _dueDate == null;
@@ -86,6 +104,30 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       startDate: _startDate!,
       dueDate: _dueDate!,
     );
+
+    if (widget.task != null) {
+  final confirm = await showDialog<bool>(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: const Text("Confirmer les modifications"),
+      content: const Text("Voulez-vous vraiment enregistrer les modifications ?"),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(dialogContext, false),
+          child: const Text("Non"),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(dialogContext, true),
+          child: const Text(
+            "Oui",
+            style: TextStyle(color: Colors.blue),
+          ),
+        ),
+      ],
+    ),
+  );
+  if (confirm != true) return;
+}
 
     widget.onAdd(newTask);
     Navigator.pop(context);
@@ -212,7 +254,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   child: Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(AppStrings.addTask),
+        title: Text(widget.task != null
+        ? AppStrings.editTask
+        : AppStrings.addTask),
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         leading: IconButton(
