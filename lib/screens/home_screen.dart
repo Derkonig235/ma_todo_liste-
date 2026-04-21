@@ -25,6 +25,17 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _toggleStatus(String id) {
+    setState(() {
+      final index = tasks.indexWhere((t) => t.id == id);
+      if (index != -1) {
+        tasks[index].status = tasks[index].status == TaskStatus.done
+            ? TaskStatus.inProgress
+            : TaskStatus.done;
+      }
+    });
+  }
+
   void _deleteTask(String id) {
     setState(() {
       tasks.removeWhere((task) => task.id == id);
@@ -149,6 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             );
                           },
+                          onStatusChanged: () => _toggleStatus(tasks[index].id),
                         );
                       },
                     ),

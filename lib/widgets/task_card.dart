@@ -7,6 +7,7 @@ class TaskCard extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onDelete;
   final VoidCallback onEdit;
+  final VoidCallback onStatusChanged;
 
   const TaskCard({
     Key? key,
@@ -14,6 +15,7 @@ class TaskCard extends StatelessWidget {
     required this.onTap,
     required this.onDelete,
     required this.onEdit,
+    required this.onStatusChanged,
   }) : super(key: key);
 
   Color _statusColor() {
@@ -44,12 +46,15 @@ class TaskCard extends StatelessWidget {
               // Icône statut
               Padding(
                 padding: const EdgeInsets.only(top: 2),
-                child: Icon(
-                  task.status == TaskStatus.done
-                      ? Icons.check_circle
-                      : Icons.circle_outlined,
-                  color: _statusColor(),
-                  size: 24,
+                child: GestureDetector(
+                  onTap: onStatusChanged,
+                  child: Icon(
+                    task.status == TaskStatus.done
+                        ? Icons.check_circle
+                        : Icons.circle_outlined,
+                    color: _statusColor(),
+                    size: 24,
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
