@@ -76,6 +76,20 @@ class TaskCard extends StatelessWidget {
                         fontSize: 14,
                       ),
                     ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Icon(Icons.calendar_today, size: 12, color: Colors.blue),
+                        const SizedBox(width: 4),
+                        Text(
+                          "${task.startDate.day}/${task.startDate.month}/${task.startDate.year} ${task.startDate.hour}h${task.startDate.minute.toString().padLeft(2, '0')}  →  ${task.dueDate.day}/${task.dueDate.month}/${task.dueDate.year} ${task.dueDate.hour}h${task.dueDate.minute.toString().padLeft(2, '0')}",
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
