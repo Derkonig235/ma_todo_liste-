@@ -5,11 +5,13 @@ import '../constants/strings.dart';
 
 class AddTaskScreen extends StatefulWidget {
   final Function(Task) onAdd;
+  final Function(Task)? onEdit;
   final Task? task;
 
   const AddTaskScreen({
     Key? key,
     required this.onAdd,
+    this.onEdit,
     this.task,
   }) : super(key: key);
 
@@ -95,7 +97,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     }
 
     final Task newTask = Task(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      id: widget.task != null ? widget.task!.id : DateTime.now().millisecondsSinceEpoch.toString(),
       title: _titleController.text,
       description: _descriptionController.text,
       priority: _priority,
@@ -129,9 +131,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   if (confirm != true) return;
 }
 
-    widget.onAdd(newTask);
-    Navigator.pop(context);
-  }
+    if (widget.task != null) {
+          widget.onEdit!(newTask);
+        } else {
+          widget.onAdd(newTask);
+        }
+      Navigator.pop(context);
+    }
 
   void _cancel() {
     if (_hasInput()) {

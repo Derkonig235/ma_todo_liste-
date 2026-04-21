@@ -16,6 +16,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Task> tasks = [];
 
+  void _editTask(Task updatedTask) {
+    setState(() {
+      final index = tasks.indexWhere((t) => t.id == updatedTask.id);
+      if (index != -1) {
+        tasks[index] = updatedTask;
+      }
+    });
+  }
+
   void _deleteTask(String id) {
     setState(() {
       tasks.removeWhere((task) => task.id == id);
@@ -134,6 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               MaterialPageRoute(
                                 builder: (context) => AddTaskScreen(
                                   onAdd: _addTask,
+                                  onEdit: _editTask,
                                   task: tasks[index],
                                 ),
                               ),
